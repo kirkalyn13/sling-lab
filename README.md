@@ -111,6 +111,17 @@ Open `http://localhost:8080`. Local credentials: `admin` / `admin`.
 | Resolution | `/system/console/jcrresolver` |
 | Script chosen | `/system/console/requests` |
 
+## Least privilege check
+
+The `catalog` sub-service maps to the `article-reader` service user (read-only on `/content`). To prove access is enforced by the repository:
+
+1. Create a `no-access` service user and deny `jcr:read` on `/content` (repoinit).
+2. Remap `dev.kirky.sling-lab:catalog` to `no-access`.
+3. `/content/test-list.html` shows "No articles found."
+4. Remap back to `article-reader` and both titles return.
+
+Note: Without the explicit deny, `no-access` could still read `/content` through default permissions in the Starter.
+
 ## Gotchas
 
 - Requesting a script's own path (`/apps/.../article.html`) serves the raw file. Always request the content path.
@@ -120,9 +131,9 @@ Open `http://localhost:8080`. Local credentials: `admin` / `admin`.
 
 ## Roadmap
 
-- [ ] Sling Model Exporter (`.model.json`)
-- [ ] `sling:resourceSuperType` inheritance
-- [ ] Service user instead of admin session
+- [x] Sling Model Exporter (`.model.json`)
+- [x] `sling:resourceSuperType` inheritance
+- [x] Service user instead of admin session
 - [ ] Run-mode OSGi config
 
 ## Notes

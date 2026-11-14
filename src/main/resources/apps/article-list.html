@@ -1,0 +1,56 @@
+<sly data-sly-use.list="dev.kirky.core.models.ArticleList">
+    <style>
+        .sl-list {
+          max-width: 680px;
+          margin: 3rem auto;
+          padding: 0 1.25rem;
+          color: #1f2328;
+          font: 18px/1.6 Georgia, "Times New Roman", serif;
+        }
+        .sl-list h2 {
+          margin: 0 0 1.25rem;
+          padding-bottom: .75rem;
+          border-bottom: 1px solid #e5e7eb;
+          font: 700 1.6rem/1.2 system-ui, -apple-system, "Segoe UI", sans-serif;
+          letter-spacing: -.02em;
+        }
+        .sl-list ul {
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+        .sl-list li {
+          display: flex;
+          align-items: center;
+          gap: .75rem;
+          padding: .85rem 1rem;
+          margin-bottom: .5rem;
+          border: 1px solid #e5e7eb;
+          border-left: 4px solid #2f6fed;
+          border-radius: 6px;
+          background: #fff;
+          transition: background .15s, transform .15s;
+        }
+        .sl-list li:hover {
+          background: #eef3ff;
+          transform: translateX(3px);
+        }
+        .sl-list .count {
+          margin-left: auto;
+          color: #656d76;
+          font: .8rem system-ui, -apple-system, "Segoe UI", sans-serif;
+        }
+        .sl-list .empty {
+          color: #656d76;
+          font-style: italic;
+        }
+    </style>
+
+    <section class="sl-list">
+        <h2>Articles</h2>
+        <ul data-sly-test="${list.titles}" data-sly-list.title="${list.titles}">
+            <li>${title}</li>
+        </ul>
+        <p class="empty" data-sly-test="${!list.titles}">No articles found.</p>
+    </section>
+</sly>
