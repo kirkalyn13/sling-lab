@@ -1,0 +1,3 @@
+Bundle-SymbolicName: dev.kirky.hello-bundle
+Sling-Model-Packages: dev.kirky.core.models
+Export-Package: dev.kirky.core.models;version=1.0.0
