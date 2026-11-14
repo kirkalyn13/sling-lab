@@ -52,7 +52,7 @@ sling-lab/
 
 ```bash
 docker run -d --name sling-lab -p 8080:8080 \
-  -v sling-lab-data:/opt/sling/launcher apache/sling:14
+  -v sling-data:/opt/sling/launcher apache/sling:14
 ```
 
 Open `http://localhost:8080`. Local credentials: `admin` / `admin`.

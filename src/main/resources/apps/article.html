@@ -1,9 +1,57 @@
 <sly data-sly-use.article="dev.kirky.core.models.Article">
-    <article>
-        <h1>${article.title}</h1>
-        <p>By ${article.author} · ${article.readingTime} min read</p>
-        <p>${article.body}</p>
-        <ul data-sly-list.tag="${article.tags}">
+    <style>
+        .sl-article {
+          max-width: 680px;
+          margin: 3rem auto;
+          padding: 0 1.25rem;
+          color: #1f2328;
+          font: 18px/1.75 Georgia, "Times New Roman", serif;
+        }
+        .sl-article h1 {
+          margin: 0 0 .5rem;
+          font: 700 2.4rem/1.2 system-ui, -apple-system, "Segoe UI", sans-serif;
+          letter-spacing: -.02em;
+        }
+        .sl-article .meta {
+          margin: 0 0 2rem;
+          padding-bottom: 1.25rem;
+          border-bottom: 1px solid #e5e7eb;
+          color: #656d76;
+          font: .9rem system-ui, -apple-system, "Segoe UI", sans-serif;
+        }
+        .sl-article .meta .author { color: #1f2328; font-weight: 600; }
+        .sl-article .body::first-letter {
+          float: left;
+          margin: .1em .12em 0 0;
+          font-size: 3.4em;
+          line-height: .8;
+          font-weight: 700;
+          color: #2f6fed;
+        }
+        .sl-article .tags {
+          display: flex;
+          flex-wrap: wrap;
+          gap: .5rem;
+          margin: 2rem 0 0;
+          padding: 0;
+          list-style: none;
+        }
+        .sl-article .tags li {
+          padding: .2rem .75rem;
+          border-radius: 999px;
+          background: #eef3ff;
+          color: #2f6fed;
+          font: 600 .8rem system-ui, -apple-system, "Segoe UI", sans-serif;
+        }
+    </style>
+
+    <article class="sl-article">
+        <header>
+            <h1>${article.title}</h1>
+            <p class="meta">By <span class="author">${article.author}</span> &middot; ${article.readingTime} min read</p>
+        </header>
+        <p class="body">${article.body}</p>
+        <ul class="tags" data-sly-test="${article.tags}" data-sly-list.tag="${article.tags}">
             <li>${tag}</li>
         </ul>
     </article>

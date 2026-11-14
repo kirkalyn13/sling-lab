@@ -1,0 +1,25 @@
+<style>
+    .sl-featured {
+      max-width: 680px;
+      margin: 3rem auto;
+      padding: 0 1.25rem 0 1.5rem;
+      border-left: 4px solid #2f6fed;
+    }
+    .sl-featured .badge {
+      display: inline-block;
+      margin-bottom: .5rem;
+      padding: .15rem .6rem;
+      border-radius: 4px;
+      background: #2f6fed;
+      color: #fff;
+      font: 700 .7rem system-ui, -apple-system, "Segoe UI", sans-serif;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .sl-featured .sl-article { margin: 0; padding: 0; }
+</style>
+
+<div class="sl-featured">
+    <span class="badge">Featured</span>
+    <sly data-sly-resource="${resource @ resourceType='sling-lab/components/article'}"/>
+</div>
