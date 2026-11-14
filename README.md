@@ -111,6 +111,13 @@ Open `http://localhost:8080`. Local credentials: `admin` / `admin`.
 | Resolution | `/system/console/jcrresolver` |
 | Script chosen | `/system/console/requests` |
 
+### Gotchas
+
+- Requesting a script's own path (`/apps/.../article.html`) serves the raw file. Always request the content path.
+- A "Resource dumped by HtmlRenderer" page means the node resolved but has no `sling:resourceType`, or no script matched.
+- Multi-value properties must be stored as `String[]`, or `tags` comes out empty.
+- A model needs `resourceType` in `@Model` for the exporter to bind.
+
 ## Least privilege check
 
 The `catalog` sub-service maps to the `article-reader` service user (read-only on `/content`). To prove access is enforced by the repository:
@@ -122,19 +129,79 @@ The `catalog` sub-service maps to the `article-reader` service user (read-only o
 
 Note: Without the explicit deny, `no-access` could still read `/content` through default permissions in the Starter.
 
-## Gotchas
+## Run-mode config
 
-- Requesting a script's own path (`/apps/.../article.html`) serves the raw file. Always request the content path.
-- A "Resource dumped by HtmlRenderer" page means the node resolved but has no `sling:resourceType`, or no script matched.
-- Multi-value properties must be stored as `String[]`, or `tags` comes out empty.
-- A model needs `resourceType` in `@Model` for the exporter to bind.
+`GreetingServiceImpl` accepts a `prefix` through an OSGi configuration. Three config files give it a different value per run mode, with no code change.
+
+| Folder | Applies to | `prefix` |
+|---|---|---|
+| `/apps/sling-lab/config` | Every run mode | `Good day` |
+| `/apps/sling-lab/config.author` | `author` | `Author says hello` |
+| `/apps/sling-lab/config.publish` | `publish` | `Publish says hello` |
+
+Local source:
+
+```
+src/main/resources/config/
+├── config/dev.kirky.core.services.impl.GreetingServiceImpl.cfg.json
+├── config.author/dev.kirky.core.services.impl.GreetingServiceImpl.cfg.json
+└── config.publish/dev.kirky.core.services.impl.GreetingServiceImpl.cfg.json
+```
+
+The file name is the component's PID: the fully qualified class name plus `.cfg.json`.
+
+### Upload
+
+Run from the project root. The folder name goes inside the form field, because a dot in the URL's last segment would be parsed as a selector and extension.
+
+```bash
+curl -u admin:admin \
+  -F"./config/jcr:primaryType=sling:Folder" \
+  -F"./config.author/jcr:primaryType=sling:Folder" \
+  -F"./config.publish/jcr:primaryType=sling:Folder" \
+  http://localhost:8080/apps/sling-lab
+
+curl -u admin:admin -F"./config/dev.kirky.core.services.impl.GreetingServiceImpl.cfg.json=@src/main/resources/config/config/dev.kirky.core.services.impl.GreetingServiceImpl.cfg.json" http://localhost:8080/apps/sling-lab
+curl -u admin:admin -F"./config.author/dev.kirky.core.services.impl.GreetingServiceImpl.cfg.json=@src/main/resources/config/config.author/dev.kirky.core.services.impl.GreetingServiceImpl.cfg.json" http://localhost:8080/apps/sling-lab
+curl -u admin:admin -F"./config.publish/dev.kirky.core.services.impl.GreetingServiceImpl.cfg.json=@src/main/resources/config/config.publish/dev.kirky.core.services.impl.GreetingServiceImpl.cfg.json" http://localhost:8080/apps/sling-lab
+```
+
+### Start with a run mode
+
+The image mounts two volumes, so mount both:
+
+```bash
+docker run -d --name sling-lab -p 8080:8080 \
+  -v sling-launcher:/opt/sling/launcher \
+  -v sling-data:/opt/sling/sling \
+  -e EXTRA_JAVA_OPTS="-Dsling.run.modes=oak_tar,author" \
+  apache/sling:14
+```
+
+Swap `author` for `publish` to switch. Drop it entirely to use only the plain `config`.
+
+### Verify
+
+| Check | Where | Expect |
+|---|---|---|
+| Active run modes | `/system/console/status-slingsettings` | `author` (or `publish`) |
+| Config bound | `/system/console/configMgr`, Sling Lab Greeting Service | Matching prefix |
+| Output | `/content/test.html` | Greeting with that prefix |
+
+### Gotchas
+
+- Run-mode folders need an explicit node type (`sling:Folder`) under `/apps`. Otherwise the upload fails with a 409.
+- A wrong PID in the file name creates a config that binds to nothing.
+- The most specific matching folder wins: `config.author` beats `config`.
+- The run mode is a startup choice. Changing it means restarting with a different flag.
+- Recreating the container is safe only if both volumes are mounted. A
 
 ## Roadmap
 
 - [x] Sling Model Exporter (`.model.json`)
 - [x] `sling:resourceSuperType` inheritance
 - [x] Service user instead of admin session
-- [ ] Run-mode OSGi config
+- [x] Run-mode OSGi config
 
 ## Notes
 
