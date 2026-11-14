@@ -1,0 +1,10 @@
+<sly data-sly-use.article="dev.kirky.core.models.Article">
+    <article>
+        <h1>${article.title}</h1>
+        <p>By ${article.author} · ${article.readingTime} min read</p>
+        <p>${article.body}</p>
+        <ul data-sly-list.tag="${article.tags}">
+            <li>${tag}</li>
+        </ul>
+    </article>
+</sly>
