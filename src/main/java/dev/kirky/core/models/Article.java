@@ -3,6 +3,8 @@ package dev.kirky.core.models;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import dev.kirky.core.services.PreviewEnvService;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
 import org.apache.sling.models.annotations.Exporter;
@@ -34,6 +36,9 @@ public class Article {
     @OSGiService
     private ReadingTimeService readingTimeService;
 
+    @OSGiService
+    private PreviewEnvService previewEnvService;
+
     public String getTitle() {
         return title;
     }
@@ -52,5 +57,9 @@ public class Article {
 
     public int getReadingTime() {
         return readingTimeService.minutes(body);
+    }
+
+    public boolean isPreview() {
+        return previewEnvService.isPreview();
     }
 }

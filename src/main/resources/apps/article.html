@@ -7,6 +7,22 @@
           color: #1f2328;
           font: 18px/1.75 Georgia, "Times New Roman", serif;
         }
+        .sl-article .banner {
+          margin: 0 0 1.5rem;
+          padding: .75rem 1rem;
+          border-left: 4px solid #2f6fed;
+          border-radius: 6px;
+          background: #eef3ff;
+          color: #1f2328;
+          font: .9rem/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+        }
+        .sl-article .banner strong {
+          margin-right: .5rem;
+          color: #2f6fed;
+          font-size: .75rem;
+          letter-spacing: .08em;
+          text-transform: uppercase;
+        }
         .sl-article h1 {
           margin: 0 0 .5rem;
           font: 700 2.4rem/1.2 system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -46,6 +62,9 @@
     </style>
 
     <article class="sl-article">
+        <div class="banner" role="status" data-sly-test="${article.preview}">
+            <strong>Preview</strong>This page is in preview mode.
+        </div>
         <header>
             <h1>${article.title}</h1>
             <p class="meta">By <span class="author">${article.author}</span> &middot; ${article.readingTime} min read</p>
