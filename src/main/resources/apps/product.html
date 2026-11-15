@@ -1,0 +1,73 @@
+<sly data-sly-use.product="dev.kirky.core.models.Product">
+    <style>
+        .sl-product {
+          max-width: 680px;
+          margin: 3rem auto;
+          padding: 0 1.25rem;
+          color: #1f2328;
+          font: 18px/1.75 Georgia, "Times New Roman", serif;
+        }
+        .sl-product .badge {
+          display: inline-block;
+          margin-bottom: .75rem;
+          padding: .15rem .6rem;
+          border-radius: 4px;
+          background: #2f6fed;
+          color: #fff;
+          font: 700 .7rem system-ui, -apple-system, "Segoe UI", sans-serif;
+          letter-spacing: .08em;
+          text-transform: uppercase;
+        }
+        .sl-product header {
+          margin-bottom: 2rem;
+          padding-bottom: 1.25rem;
+          border-bottom: 1px solid #e5e7eb;
+        }
+        .sl-product h1 {
+          margin: 0 0 .5rem;
+          font: 700 2.4rem/1.2 system-ui, -apple-system, "Segoe UI", sans-serif;
+          letter-spacing: -.02em;
+        }
+        .sl-product .meta {
+          display: flex;
+          align-items: center;
+          gap: .75rem;
+          margin: 0;
+          font: 600 .8rem system-ui, -apple-system, "Segoe UI", sans-serif;
+        }
+        .sl-product .type {
+          margin: 0;
+          color: #656d76;
+          font-size: .8rem;
+          font-weight: 600;
+          letter-spacing: .08em;
+          text-transform: uppercase;
+        }
+        .sl-product .rating {
+          padding: .2rem .75rem;
+          border-radius: 999px;
+          background: #eef3ff;
+          color: #2f6fed;
+        }
+        .sl-product .sl-article {
+          max-width: none;
+          margin: 0;
+          padding: 0;
+        }
+        .sl-product .sl-article h1 {
+          font-size: 1.6rem;
+        }
+    </style>
+
+    <div class="sl-product">
+        <span class="badge">Featured</span>
+        <header>
+            <h1>${product.name}</h1>
+            <div class="meta">
+                <h2 class="type" data-sly-test="${product.type}">${product.type}</h2>
+                <span class="rating" data-sly-test="${product.rating}">&#9733; ${product.rating}</span>
+            </div>
+        </header>
+        <sly data-sly-resource="${resource @ resourceType='sling-lab/components/article'}"/>
+    </div>
+</sly>
