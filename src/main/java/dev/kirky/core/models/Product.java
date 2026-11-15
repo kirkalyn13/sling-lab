@@ -1,16 +1,11 @@
 package dev.kirky.core.models;
 
-import dev.kirky.core.services.ReadingTimeService;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
 import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
-import org.apache.sling.models.annotations.injectorspecific.OSGiService;
+import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 @Model(
         adaptables = Resource.class,
@@ -29,6 +24,9 @@ public class Product {
     @ValueMapValue
     private int rating;
 
+    @Self
+    private Article article;
+
     public String getName() {
         return name;
     }
@@ -39,5 +37,9 @@ public class Product {
 
     public int getRating() {
         return rating;
+    }
+
+    public Article getArticle() {
+        return article;
     }
 }
